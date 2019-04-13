@@ -3,10 +3,13 @@ import java.util.concurrent.CyclicBarrier;
 
 /**
  * This is a simple demonstration I created to test and understand the CyclicBarrier, a java Thread synchronization mechanism.
+ *
+ * Read the comments below for a better understanding of this great tool.
  */
 public class CyclicBarrier_Demo {
 
     static final int NUM_THREADS = 4;
+
     static String thisThreadName;
     static CyclicBarrier cyclicBarrier;
 
