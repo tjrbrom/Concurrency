@@ -3,14 +3,13 @@ import java.util.concurrent.CyclicBarrier;
 
 /**
  * This is a simple demonstration I created to test and understand the CyclicBarrier, a java Thread synchronization mechanism.
- *
+ * <p>
  * Read the comments below for a better understanding of this great tool.
  */
 public class CyclicBarrier_Demo {
 
     static final int NUM_THREADS = 4;
 
-    static String thisThreadName;
     static CyclicBarrier cyclicBarrier;
 
     public static void main(String args[]) {
@@ -19,13 +18,12 @@ public class CyclicBarrier_Demo {
 
         // When 4 threads have called await(), the barrier is broken, and it's own runnable executes !
         cyclicBarrier = new CyclicBarrier(NUM_THREADS,
-                () -> System.out.println("Limit reached, executing barrier's Runnable, by " + thisThreadName));
+                () -> System.out.println("Limit reached, barrier now proceeds to execute it's own Runnable."));
 
-        // we create some threads, that will await on the barrier
+        // we create some threads, that will call await on the barrier
         for (int i = 0; i < NUM_THREADS; i++) {
-            Thread worker = new Thread(new TestRunnable());
-            worker.setName("Thread " + i);
-            worker.start();
+            Thread thread = new Thread(new TestRunnable());
+            thread.start();
         }
 
     }
@@ -35,11 +33,10 @@ public class CyclicBarrier_Demo {
 
         @Override
         public void run() {
-            thisThreadName = Thread.currentThread().getName();
 
             try {
-                System.out.println(thisThreadName
-                        + " waiting for others to reach barrier.");
+                System.out.println(Thread.currentThread().getName()
+                        + ": Calling await(), waiting for others to reach barrier.");
                 cyclicBarrier.await();
             } catch (InterruptedException e) {
                 // ignored
