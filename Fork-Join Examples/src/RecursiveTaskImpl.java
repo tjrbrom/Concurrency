@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * With RecursiveTask, the computation of each task is bound to return a value
  * that can be united into a single result.
- *
+ * <p>
  * The invokeAll() method puts tasks in a common pool and returns Futures.
  * The primary method for awaiting completion and extracting
  * results of a task is {@link #join}
