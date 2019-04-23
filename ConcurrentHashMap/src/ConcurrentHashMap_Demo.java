@@ -35,7 +35,7 @@ public class ConcurrentHashMap_Demo {
         service.shutdown();
         service.awaitTermination(5, TimeUnit.SECONDS);
 
-        System.out.println(hashMap.get("random"));
+        System.out.println("Result using simple HashMap and unsafe increments: " + hashMap.get("random"));
     }
 
     // this one works fine when using an AtomicInteger to increment the simple HashMap value !
@@ -64,7 +64,7 @@ public class ConcurrentHashMap_Demo {
         service.shutdown();
         service.awaitTermination(5, TimeUnit.SECONDS);
 
-        System.out.println(hashMap.get("random"));
+        System.out.println("Result using simple HashMap and safe/atomic increments: " + hashMap.get("random"));
     }
 
     // Lastly, we can use a ConcurrentHashMap to achieve automatic sinchronization
@@ -91,7 +91,7 @@ public class ConcurrentHashMap_Demo {
         service.shutdown();
         service.awaitTermination(5, TimeUnit.SECONDS);
 
-        System.out.println(hashMap.get("random"));
+        System.out.println("Result using ConcurrentHashMap: " + hashMap.get("random"));
     }
 
     public static void main(String[] args) throws InterruptedException {
