@@ -24,6 +24,9 @@ public class CopyOnWriteArrayListDemo {
         // The newly added number is not contained in the iterator,
         // since it was added after the iterator was created:
         iterator.forEachRemaining(System.out::println);
+
+        // This collection is thread-safe, since iterations will not be affected
+        // by other threads adding and removing elements
     }
 
 }
