@@ -4,6 +4,8 @@ import java.util.concurrent.SynchronousQueue;
 /**
  * SynchronousQueue helps us coordinate the sharing of information between threads,
  * so that we can be sure that a value has already been set before accessed.
+ *
+ * Best used in cases where there are always available consumers, ready to take the added element.
  */
 public class SynchronousQueue_Demo {
 
