@@ -12,22 +12,21 @@ public class Semaphore_Demo {
 
     public static void main(String[] args) throws InterruptedException {
 
-        // we create here 4 threads, with each one trying to acquire a permit if it is available
+        // each thread tries to acquire a permit
         for (int i = 0; i < NUM_THREADS; i++) {
             Thread thread = new Thread(new TestRunnable());
             thread.start();
         }
         Thread.sleep(1000l);
 
-        // executor finished, available semaphore permits should now be zero
+        // available permits should be zero
         System.out.println("Remaining available permits: " + semaphore.availablePermits());
 
-        // no more permits, therefore tryAcquire returns false
+        // no more permits, return false
         System.out.println("Calling tryAcquire() returns: " + semaphore.tryAcquire());
 
         // next, we attempt to release an already acquired permit
         // and check again the number of available semaphore permits
-        System.out.println("=========================================");
         System.out.println("Calling release() on semaphore!");
         semaphore.release();
         System.out.println("Remaining available permits, after releasing: " + semaphore.availablePermits());
