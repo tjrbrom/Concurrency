@@ -1,6 +1,10 @@
+package org.com.concurrency;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * PriorityBlockingQueue is a blocking queue that defines a priority with which elements are put and polled from,
@@ -10,7 +14,9 @@ import java.util.concurrent.PriorityBlockingQueue;
  */
 public class PriorityBlockingQueue_Demo {
 
-    static PriorityBlockingQueue<Integer> queue = new PriorityBlockingQueue<>();
+    private final static Logger LOGGER = LoggerFactory.getLogger(PriorityBlockingQueue_Demo.class);
+
+    private final static PriorityBlockingQueue<Integer> QUEUE = new PriorityBlockingQueue<>();
 
     public static void main(String args[]) throws InterruptedException {
 
@@ -26,19 +32,19 @@ public class PriorityBlockingQueue_Demo {
 
             String threadName = Thread.currentThread().getName();
 
-            System.out.println(threadName + " tries to take, but is blocked until elements are added to the queue. Waiting...");
+            LOGGER.info(threadName + " tries to take, but is blocked until elements are added to the queue. Waiting...");
 
             while (true) {
 
                 try {
-                    int taken = queue.take();
-                    System.out.println(threadName + " took the number " + taken + " from the queue");
+                    int taken = QUEUE.take();
+                    LOGGER.info(threadName + " took the number " + taken + " from the queue");
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
 
-                if(queue.isEmpty()) {
-                    System.out.println(threadName + " received each number ordered by the priority queue");
+                if(QUEUE.isEmpty()) {
+                    LOGGER.info(threadName + " received each number ordered by the priority queue");
                     return;
                 }
             }
@@ -47,10 +53,9 @@ public class PriorityBlockingQueue_Demo {
 
         Thread.sleep(3000);
 
-        System.out.println("Adding a list of numbers to the queue");
+        LOGGER.info("Adding a list of numbers to the queue");
         // the numbers are automatically ordered by the queue
-        queue.addAll(list);
-
+        QUEUE.addAll(list);
     }
 
 }

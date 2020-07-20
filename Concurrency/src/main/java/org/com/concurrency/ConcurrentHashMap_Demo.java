@@ -1,3 +1,5 @@
+package org.com.concurrency;
+
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
@@ -5,12 +7,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This example shows the difference when using a simple HashMap, as opposed to using a ConcurrentHashMap
  * to achieve synchronization between threaded execution of operations on a Map.
  */
 public class ConcurrentHashMap_Demo {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(ConcurrentHashMap_Demo.class);
 
     static void simpleHashMap_cannotHandleMultithreadedOperationsSafely() throws InterruptedException {
 
@@ -25,7 +31,7 @@ public class ConcurrentHashMap_Demo {
                     for (int j = 0; j < 15; j++) {
                         hashMap.computeIfPresent(
                                 "random",
-                                (key, value) -> { return value + 1; }
+                                (key, value) -> value + 1
                         );
                     }
                 }
@@ -35,7 +41,7 @@ public class ConcurrentHashMap_Demo {
         service.shutdown();
         service.awaitTermination(5, TimeUnit.SECONDS);
 
-        System.out.println("Result using simple HashMap and unsafe increments: " + hashMap.get("random"));
+        LOGGER.info("Result using simple HashMap and unsafe increments: " + hashMap.get("random"));
     }
 
     // this one works fine when using an AtomicInteger to increment the simple HashMap value !
@@ -54,7 +60,7 @@ public class ConcurrentHashMap_Demo {
                     for (int j = 0; j < 15; j++) {
                         hashMap.computeIfPresent(
                                 "random",
-                                (key, value) -> { return atomicInteger.incrementAndGet(); }
+                                (key, value) -> atomicInteger.incrementAndGet()
                         );
                     }
                 }
@@ -64,7 +70,7 @@ public class ConcurrentHashMap_Demo {
         service.shutdown();
         service.awaitTermination(5, TimeUnit.SECONDS);
 
-        System.out.println("Result using simple HashMap and safe/atomic increments: " + hashMap.get("random"));
+        LOGGER.info("Result using simple HashMap and safe/atomic increments: " + hashMap.get("random"));
     }
 
     // Lastly, we can use a ConcurrentHashMap to achieve automatic sinchronization
@@ -81,7 +87,7 @@ public class ConcurrentHashMap_Demo {
                     for (int j = 0; j < 15; j++) {
                         hashMap.computeIfPresent(
                                 "random",
-                                (key, value) -> { return value + 1; }
+                                (key, value) -> value + 1
                         );
                     }
                 }
@@ -91,7 +97,7 @@ public class ConcurrentHashMap_Demo {
         service.shutdown();
         service.awaitTermination(5, TimeUnit.SECONDS);
 
-        System.out.println("Result using ConcurrentHashMap: " + hashMap.get("random"));
+        LOGGER.info("Result using ConcurrentHashMap: " + hashMap.get("random"));
     }
 
     public static void main(String[] args) throws InterruptedException {

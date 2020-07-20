@@ -1,5 +1,9 @@
+package org.com.concurrency;
+
 import java.util.Random;
 import java.util.concurrent.SynchronousQueue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SynchronousQueue helps us coordinate the sharing of information between threads,
@@ -9,19 +13,20 @@ import java.util.concurrent.SynchronousQueue;
  */
 public class SynchronousQueue_Demo {
 
-    static SynchronousQueue<Integer> synchronousQueue = new SynchronousQueue();
+    private final static Logger LOGGER = LoggerFactory.getLogger(SynchronousQueue_Demo.class);
+    private final static SynchronousQueue<Integer> SYNCHRONOUS_QUEUE = new SynchronousQueue();
 
     public static void main(String[] args) throws InterruptedException {
 
         Integer randomInt = new Random().nextInt();
 
-        System.out.println("Initial size of the queue is: " + synchronousQueue.size());
+        LOGGER.info("Initial size of the queue: " + SYNCHRONOUS_QUEUE.size());
 
         Thread first = new Thread(
             // first runnable puts a number in the queue, while access from other threads is blocked
             () -> {
                 try {
-                    synchronousQueue.put(randomInt);
+                    SYNCHRONOUS_QUEUE.put(randomInt);
                 } catch (InterruptedException ie) {
                     ie.printStackTrace();
                 }
@@ -31,8 +36,8 @@ public class SynchronousQueue_Demo {
             // second runnable waits until the first has finished, then proceeds to take that number from the queue
             () -> {
                 try {
-                    int taken = synchronousQueue.take();
-                    System.out.println("Taking item from queue: " + taken);
+                    int taken = SYNCHRONOUS_QUEUE.take();
+                    LOGGER.info("Taking item from queue: " + taken);
                 } catch (InterruptedException ie) {
                     ie.printStackTrace();
                 }
@@ -43,7 +48,7 @@ public class SynchronousQueue_Demo {
 
         Thread.sleep(1000);
 
-        System.out.println("Both threads finished execution, size of the queue is back to: " + synchronousQueue.size());
+        LOGGER.info("Both threads finished execution, size of the queue is back to: " + SYNCHRONOUS_QUEUE.size());
     }
 
 }

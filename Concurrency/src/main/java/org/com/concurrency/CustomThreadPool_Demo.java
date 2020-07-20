@@ -1,13 +1,19 @@
+package org.com.concurrency;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
 public class CustomThreadPool_Demo {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(CustomThreadPool_Demo.class);
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {
 
@@ -18,10 +24,10 @@ public class CustomThreadPool_Demo {
             .boxed()
             .collect(Collectors.toList());
 
-        System.out.println("Contents of list:");
+        LOGGER.info("Contents of list:");
         list.stream().forEach(System.out::println);
 
-        System.out.println("=====================");
+        LOGGER.info("=====================");
 
         // The parallelism number can be the number of cores
         ForkJoinPool customThreadPool = new ForkJoinPool(4);
@@ -31,7 +37,7 @@ public class CustomThreadPool_Demo {
                     .reduce(0, Integer::sum)
         ).get();
 
-        System.out.println("Sum of contents, using a custom thread pool: " + result);
+        LOGGER.info("Sum of contents, using a custom thread pool: " + result);
     }
 
 }

@@ -1,3 +1,5 @@
+package org.com.concurrency;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -5,6 +7,8 @@ import java.util.List;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * With RecursiveTask, the computation of each task is bound to return a value
@@ -16,20 +20,21 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class RecursiveTaskImpl extends RecursiveTask<Integer> {
 
-    static AtomicInteger total = new AtomicInteger(0);
+    private final static Logger LOGGER = LoggerFactory.getLogger(RecursiveTaskImpl.class);
+    private static final AtomicInteger TOTAL = new AtomicInteger(0);
     int[] ints;
 
     public RecursiveTaskImpl(int[] ints) {
         this.ints = ints;
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
 
         int[] testArr = {4, 2, 1, 4, 2, 3, 5, 9, 8, 3, 5, 11, 8};
 
         new RecursiveTaskImpl(testArr).compute();
 
-        System.out.println(total);
+        LOGGER.info(String.valueOf(TOTAL));
     }
 
     @Override
@@ -67,7 +72,7 @@ public class RecursiveTaskImpl extends RecursiveTask<Integer> {
     }
 
     private Integer print(int[] ints) {
-        return total.addAndGet(Arrays
+        return TOTAL.addAndGet(Arrays
                 .stream(ints)
                 .sum());
     }
